@@ -42,10 +42,12 @@ public class Server {
         this.setMemoryResource(new MemoryResource(requestedGigaB));
     }
     public boolean isAvailable(int requestedGigaB){
+        System.out.println("**** req= "+ requestedGigaB + " MA = "+this.getMemoryResource().getAllocatedMemory());
        return requestedGigaB <= this.getMemoryResource().getAllocatedMemory();
     }
 
     public int useServer(int gigas){
+        System.out.println("use the server ");
         synchronized (this)
         {
             return this.getMemoryResource().useResource(gigas);
@@ -55,7 +57,7 @@ public class Server {
 
     @Override
     public String toString() {
-        return String.format("[Server] ID:%d, State:%s, MemoryResource:%s",id,getState(),getMemoryResource());
+        return String.format("[Server] ID:%d, State:%s, MemoryResource:%s",id,getState(),getMemoryResource().toString());
     }
 
 }

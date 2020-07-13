@@ -15,6 +15,7 @@ public class ServiceProvider implements  Runnable{
     private final Integer requestedGigas;
 
     static {
+        System.out.println("static block");
         servers.add(new Server(new MemoryResource(30)));
         servers.add(new Server(new MemoryResource(40)));
         servers.add(new Server(new MemoryResource(50)));
@@ -22,6 +23,7 @@ public class ServiceProvider implements  Runnable{
     }
 
     public ServiceProvider(Integer requestedGigas) {
+        System.out.println("constructor ");
         this.requestedGigas = requestedGigas;
     }
 
@@ -32,18 +34,21 @@ public class ServiceProvider implements  Runnable{
     }
 
     public Server findAvailable(int requestedGigaB){
+        System.out.println("Find the Available ");
         Server availableServer ;
-        for(Server server : servers){
-            if ((!isLocked(server)) ){
-                if(server.isAvailable(requestedGigaB)) {
-                    availableServer = server ;
-                }
-                else{
-                    server.reallocate(requestedGigaB);
+        for(Server server : servers) {
+            synchronized (server) {
+                if ((!isLocked(server))) {
+                    if (server.isAvailable(requestedGigaB)) {
+                        availableServer = server;
+                    } else {
+                        server.reallocate(requestedGigaB);
+                    }
                 }
             }
         }
         availableServer = createNewServer()  ;
+        System.out.println("avialable found" + availableServer.toString());
         return availableServer ;
     }
 
@@ -53,11 +58,11 @@ public class ServiceProvider implements  Runnable{
 
     @Override
     public void run() {
+        System.out.println("at the run");
         Server availableServer = findAvailable(requestedGigas);
         availableServer.useServer(requestedGigas);
+        System.out.println(availableServer.toString());
         //update DB
-
-
 
     }
 }

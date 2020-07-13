@@ -39,4 +39,12 @@ public class MemoryResource implements Resource{
         setUsageCount(getUsageCount()+gigaBytes);
         return allocatedMemory ;
     }
+
+    @Override
+    public String toString() {
+        return "MemoryResource{" +
+                "usageCount=" + usageCount +
+                ", allocatedMemory=" + allocatedMemory +
+                '}';
+    }
 }

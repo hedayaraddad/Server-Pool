@@ -1,4 +1,4 @@
-package com.service.serverPool.DAO;
+package com.service.serverPool.repository.configuration;
 
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.policy.ClientPolicy;

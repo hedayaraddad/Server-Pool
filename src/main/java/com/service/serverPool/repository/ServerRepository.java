@@ -50,7 +50,7 @@ public class ServerRepository implements CustomAerospikeRepository
     }
 
     @Override
-    public ServerEntity find(ServerEntity aInServerEntity)
+    public synchronized ServerEntity find(ServerEntity aInServerEntity)
     {
         Key key =convertIndexToKey(aInServerEntity.getId());
         return convertRecordToServerPar(client.get(DBParameters.policy, key));
@@ -90,7 +90,7 @@ public class ServerRepository implements CustomAerospikeRepository
     }
 
     @Override
-    public ServerEntity delete(ServerEntity aInServerEntity)
+    public synchronized ServerEntity delete(ServerEntity aInServerEntity)
     {
         ServerEntity aOutLServerEntity = aInServerEntity;
         Key key =convertIndexToKey(aInServerEntity.getId());

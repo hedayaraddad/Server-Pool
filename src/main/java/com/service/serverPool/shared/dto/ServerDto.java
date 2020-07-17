@@ -13,8 +13,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 package com.service.serverPool.shared.dto;
 
-import com.service.serverPool.model.MemoryResource;
-
 import java.io.Serializable;
 
 public class ServerDto implements Serializable
@@ -24,7 +22,7 @@ public class ServerDto implements Serializable
     private int id ;
     private static int IdCounter = 211 ;
     private String state ;
-    private MemoryResource memoryResource ;
+    private MemoryResourceDto memoryResource ;
 
     public int getId()
     {
@@ -52,13 +50,13 @@ public class ServerDto implements Serializable
         state = aInState;
     }
 
-    public MemoryResource getMemoryResource()
+    public MemoryResourceDto getMemoryResource()
     {
         return memoryResource;
     }
 
     public void setMemoryResource(
-            MemoryResource aInMemoryResource)
+            MemoryResourceDto aInMemoryResource)
     {
         memoryResource = aInMemoryResource;
     }

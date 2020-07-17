@@ -14,9 +14,8 @@
 package com.service.serverPool.service;
 
 import com.service.serverPool.io.entity.ServerEntity;
-import com.service.serverPool.model.MemoryResource;
-import com.service.serverPool.model.Server;
 import com.service.serverPool.repository.CustomAerospikeRepository;
+import com.service.serverPool.shared.dto.MemoryResourceDto;
 import com.service.serverPool.shared.dto.ServerDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,9 +57,25 @@ public class ServerServiceImpl implements ServerService
         return aOutServerDto ;
     }
 
+    public synchronized ArrayList<ServerDto> assignServersToList()
+    {
+        ArrayList<ServerDto> aOuLServerDtos = new ArrayList<>() ;
+        ArrayList<ServerEntity> lServerEntities = serverRepository.findAll("servers") ;
+        for(ServerEntity lServerEntity : lServerEntities)
+        {
+            ServerDto lServerDto = new ServerDto() ;
+            BeanUtils.copyProperties(lServerEntity,lServerDto) ;
+            aOuLServerDtos.add(lServerDto) ;
+        }
+        return aOuLServerDtos ;
+    }
+
     @Override
     public ServerDto findAvailable(int aInRequestedGigaBytes)
     {
+        if(servers.isEmpty()){
+            servers = assignServersToList() ;
+        }
         ServerDto aOutAvailableServerDto = getAvailableNonLockedServer(aInRequestedGigaBytes) ;
         if(aOutAvailableServerDto == null)
         {
@@ -128,7 +143,8 @@ public class ServerServiceImpl implements ServerService
         ServerDto aOutServerDto =new ServerDto() ;
         int lIdCounter = ServerDto.getIdCounter() ;
         aOutServerDto.setId(lIdCounter++);
-        aOutServerDto.setMemoryResource(new MemoryResource(70));
+
+        aOutServerDto.setMemoryResource(getMemoryResourceDto());
         aOutServerDto.setState("Creating");
         try
         {
@@ -141,6 +157,15 @@ public class ServerServiceImpl implements ServerService
         aOutServerDto.setState("Active");
 
         return createServer(aOutServerDto);
+    }
+
+    public MemoryResourceDto getMemoryResourceDto()
+    {
+        MemoryResourceDto aOutMemoryResourceDto = new MemoryResourceDto() ;
+        aOutMemoryResourceDto.setUsageCount(70);
+        aOutMemoryResourceDto.setAllocatedMemory(70);
+
+        return aOutMemoryResourceDto ;
     }
 
 

@@ -43,8 +43,8 @@ public class ServerRepository implements CustomAerospikeRepository
         aOutServerEntity.setId(Integer.parseInt(aInRecord.getValue("PK").toString()));
         aOutServerEntity.setServerId(Integer.parseInt(aInRecord.getValue("PK").toString()));
         aOutServerEntity.setState(aInRecord.getValue("state").toString());
-        aOutServerEntity.setMemoryAllocation(Integer.parseInt(aInRecord.getValue("AM").toString()));
-        aOutServerEntity.setUsageCounter(Integer.parseInt(aInRecord.getValue("UC").toString()));
+        aOutServerEntity.setAllocatedMemory(Integer.parseInt(aInRecord.getValue("AM").toString()));
+        aOutServerEntity.setUsageCount(Integer.parseInt(aInRecord.getValue("UC").toString()));
 
         return aOutServerEntity ;
     }
@@ -81,8 +81,8 @@ public class ServerRepository implements CustomAerospikeRepository
 
         Bin idBin = new Bin("id", aInServerEntity.getServerId());
         Bin stateBin = new Bin("state", aInServerEntity.getState());
-        Bin AMBin = new Bin("AM", aInServerEntity.getMemoryAllocation());
-        Bin UCBin = new Bin("UC", aInServerEntity.getUsageCounter());
+        Bin AMBin = new Bin("AM", aInServerEntity.getAllocatedMemory());
+        Bin UCBin = new Bin("UC", aInServerEntity.getUsageCount());
 
         client.put(DBParameters.writePolicy, key,idBin, stateBin, AMBin, UCBin);
 

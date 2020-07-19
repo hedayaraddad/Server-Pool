@@ -22,7 +22,8 @@ public class ServerDto implements Serializable
     private int id ;
     private static int IdCounter = 211 ;
     private String state ;
-    private MemoryResourceDto memoryResource ;
+    private int allocatedMemory ;
+    private int usageCount ;
 
     public int getId()
     {
@@ -39,6 +40,10 @@ public class ServerDto implements Serializable
         return IdCounter;
     }
 
+    public static void setIdCounter(int aInIdCounter)
+    {
+        IdCounter = aInIdCounter;
+    }
 
     public String getState()
     {
@@ -50,14 +55,34 @@ public class ServerDto implements Serializable
         state = aInState;
     }
 
-    public MemoryResourceDto getMemoryResource()
+    public int getAllocatedMemory()
     {
-        return memoryResource;
+        return allocatedMemory;
     }
 
-    public void setMemoryResource(
-            MemoryResourceDto aInMemoryResource)
+    public void setAllocatedMemory(int aInAllocatedMemory)
     {
-        memoryResource = aInMemoryResource;
+        allocatedMemory = aInAllocatedMemory;
+    }
+
+    public int getUsageCount()
+    {
+        return usageCount;
+    }
+
+    public void setUsageCount(int aInUsageCount)
+    {
+        usageCount = aInUsageCount;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ServerDto{" +
+                "id=" + id +
+                ", state='" + state + '\'' +
+                ", allocatedMemory=" + allocatedMemory +
+                ", usageCount=" + usageCount +
+                '}';
     }
 }

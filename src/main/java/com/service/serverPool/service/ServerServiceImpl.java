@@ -15,7 +15,6 @@ package com.service.serverPool.service;
 
 import com.service.serverPool.io.entity.ServerEntity;
 import com.service.serverPool.repository.CustomAerospikeRepository;
-import com.service.serverPool.shared.dto.MemoryResourceDto;
 import com.service.serverPool.shared.dto.ServerDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +97,7 @@ public class ServerServiceImpl implements ServerService
     @Override
     public boolean isMemoryAvailable(ServerDto aInServerDto , int aInRequestedGigaBytes)
     {
-        return aInRequestedGigaBytes <= aInServerDto.getMemoryResource().getAllocatedMemory();
+        return aInRequestedGigaBytes <= aInServerDto.getAllocatedMemory();
     }
 
     public synchronized ServerDto getAvailableNonLockedServer(int aInRequestedGigaBytes)
@@ -128,7 +127,7 @@ public class ServerServiceImpl implements ServerService
                 if(server.getState() == "Active")
                 {
                     System.out.println("no space so we allocate");
-                    useServer(server, aInRequestedGigaBytes);
+                    server.setAllocatedMemory(aInRequestedGigaBytes);
                     System.out.println(server.toString());
                     aOutAvailableServerDto = server;
                     break;
@@ -144,7 +143,7 @@ public class ServerServiceImpl implements ServerService
         int lIdCounter = ServerDto.getIdCounter() ;
         aOutServerDto.setId(lIdCounter++);
 
-        aOutServerDto.setMemoryResource(getMemoryResourceDto());
+        aOutServerDto.setAllocatedMemory(70);
         aOutServerDto.setState("Creating");
         try
         {
@@ -159,26 +158,16 @@ public class ServerServiceImpl implements ServerService
         return createServer(aOutServerDto);
     }
 
-    public MemoryResourceDto getMemoryResourceDto()
-    {
-        MemoryResourceDto aOutMemoryResourceDto = new MemoryResourceDto() ;
-        aOutMemoryResourceDto.setUsageCount(70);
-        aOutMemoryResourceDto.setAllocatedMemory(70);
-
-        return aOutMemoryResourceDto ;
-    }
-
-
     @Override
     public ServerDto useServer(ServerDto aInServerDto ,int aInRequestedGiga)
     {
         ServerEntity lServerEntity =new ServerEntity() ;
         BeanUtils.copyProperties(aInServerDto,lServerEntity);
 
-        int lNewMemoryValue = lServerEntity.getMemoryAllocation() - aInRequestedGiga ;
-        lServerEntity.setMemoryAllocation(lNewMemoryValue);
-        int lNewUsageCounter = lServerEntity.getUsageCounter() + aInRequestedGiga ;
-        lServerEntity.setUsageCounter(lNewUsageCounter);
+        int lNewMemoryValue = lServerEntity.getAllocatedMemory() - aInRequestedGiga ;
+        lServerEntity.setAllocatedMemory(lNewMemoryValue);
+        int lNewUsageCounter = lServerEntity.getUsageCount() + aInRequestedGiga ;
+        lServerEntity.setUsageCount(lNewUsageCounter);
 
         ServerEntity lSavedServerEntity = serverRepository.save(lServerEntity) ;
 

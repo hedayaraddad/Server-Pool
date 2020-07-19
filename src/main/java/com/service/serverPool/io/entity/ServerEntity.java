@@ -21,8 +21,8 @@ public class ServerEntity implements Serializable
     private int id ;
     private int serverId ;
     private String state ;
-    private int MemoryAllocation ;
-    private int usageCounter ;
+    private int allocatedMemory ;
+    private int usageCount ;
 
     public int getId()
     {
@@ -54,23 +54,23 @@ public class ServerEntity implements Serializable
         state = aInState;
     }
 
-    public int getMemoryAllocation()
+    public int getAllocatedMemory()
     {
-        return MemoryAllocation;
+        return allocatedMemory;
     }
 
-    public synchronized void setMemoryAllocation(int aInMemoryAllocation)
+    public synchronized void setAllocatedMemory(int aInAllocatedMemory)
     {
-        MemoryAllocation = aInMemoryAllocation;
+        allocatedMemory = aInAllocatedMemory;
     }
 
-    public int getUsageCounter()
+    public int getUsageCount()
     {
-        return usageCounter;
+        return usageCount;
     }
 
-    public synchronized void setUsageCounter(int aInUsageCounter)
+    public synchronized void setUsageCount(int aInUsageCount)
     {
-        usageCounter = aInUsageCounter;
+        usageCount = aInUsageCount;
     }
 }

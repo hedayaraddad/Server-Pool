@@ -17,8 +17,8 @@ public class ServerRest
 {
     private int id ;
     private String state ;
-    private MemoryResourceDetailsResponseModel
-            memoryResourceDetailsResponseModel_;
+    private int allocatedMemory ;
+    private int usageCount ;
 
     public int getId()
     {
@@ -40,16 +40,24 @@ public class ServerRest
         state = aInState;
     }
 
-    public MemoryResourceDetailsResponseModel getMemoryResourceDetailsResponseModel()
+    public int getUsageCount()
     {
-        return memoryResourceDetailsResponseModel_;
+        return usageCount;
     }
 
-    public void setMemoryResourceDetailsResponseModel(
-            MemoryResourceDetailsResponseModel aInMemoryResourceDetailsResponseModel)
+    public void setUsageCount(int aInUsageCount)
     {
-        memoryResourceDetailsResponseModel_ =
-                aInMemoryResourceDetailsResponseModel;
+        usageCount = aInUsageCount;
+    }
+
+    public int getAllocatedMemory()
+    {
+        return allocatedMemory;
+    }
+
+    public void setAllocatedMemory(int aInAllocatedMemory)
+    {
+        allocatedMemory = aInAllocatedMemory;
     }
 
     @Override
@@ -58,8 +66,8 @@ public class ServerRest
         return "ServerRest{" +
                 "id=" + id +
                 ", state='" + state + '\'' +
-                ", memoryResourceDetailsResponseModel_=" +
-                memoryResourceDetailsResponseModel_ +
+                ", usageCount=" + usageCount +
+                ", allocatedMemory=" + allocatedMemory +
                 '}';
     }
 }

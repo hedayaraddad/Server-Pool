@@ -31,6 +31,28 @@ public class ServerServiceImpl implements ServerService
     public static ArrayList<ServerDto> servers = new ArrayList<ServerDto>(100) ;
     private int requestedGigabytes ;
 
+    static{
+        ServerDto lServerDto1 = new ServerDto() ;
+        lServerDto1.setId(200);
+        lServerDto1.setState("Active");
+        lServerDto1.setAllocatedMemory(50);
+        lServerDto1.setUsageCount(0);
+
+        ServerDto lServerDto2 = new ServerDto() ;
+        lServerDto2.setId(100);
+        lServerDto2.setState("Active");
+        lServerDto2.setAllocatedMemory(30);
+        lServerDto2.setUsageCount(0);
+
+        ServerDto lServerDto3 = new ServerDto() ;
+        lServerDto3.setId(300);
+        lServerDto3.setState("Active");
+        lServerDto3.setAllocatedMemory(20);
+        lServerDto3.setUsageCount(0);
+        servers.add(lServerDto1) ;
+        servers.add(lServerDto2) ;
+        servers.add(lServerDto3);
+    }
     public ServerServiceImpl()
     {
     }

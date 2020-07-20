@@ -8,14 +8,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -38,11 +43,19 @@ class ServerServiceImplTest
     @Mock
     ServerRepository serverRepository_;
 
+    @Mock
+    ArrayList<ServerDto> serverDtos_;
 
+    @Mock
+    Iterator<ServerDto> serverDtoIterator_ ;
+
+
+    @SuppressWarnings("unchecked")
     @BeforeEach
     void setUp()
     {
         MockitoAnnotations.initMocks(this);
+
     }
 
     @Test
@@ -118,6 +131,35 @@ class ServerServiceImplTest
     @Test
     void getAvailableNonLockedServer()
     {
+        ServerDto lServerDto1 = new ServerDto() ;
+        lServerDto1.setId(200);
+        lServerDto1.setState("Active");
+        lServerDto1.setAllocatedMemory(50);
+        lServerDto1.setUsageCount(0);
+
+        ServerDto lServerDto2 = new ServerDto() ;
+        lServerDto2.setId(100);
+        lServerDto2.setState("Active");
+        lServerDto2.setAllocatedMemory(30);
+        lServerDto2.setUsageCount(0);
+
+        ServerDto lServerDto3 = new ServerDto() ;
+        lServerDto3.setId(300);
+        lServerDto3.setState("Active");
+        lServerDto3.setAllocatedMemory(20);
+        lServerDto3.setUsageCount(0);
+
+        doCallRealMethod().when(serverDtos_).forEach(any(Consumer.class));
+
+        when(serverDtos_.iterator()).thenReturn(serverDtoIterator_);
+        when(serverDtoIterator_ .hasNext()).thenReturn(true, true, true, false);
+        when(serverDtoIterator_ .next()).thenReturn(lServerDto1)
+                .thenReturn(lServerDto2).thenReturn(lServerDto3);
+
+
+        //ServerDto lServerDto = serverService_.getAvailableNonLockedServer(10);
+        assertEquals(3,serverDtos_.size());
+        //assertNotNull(lServerDto);
     }
 
     @Test
@@ -140,15 +182,6 @@ class ServerServiceImplTest
     {
     }
 
-    @Test
-    void add()
-    {
-    }
-
-    @Test
-    void remove()
-    {
-    }
 
     @Test
     void getServers()

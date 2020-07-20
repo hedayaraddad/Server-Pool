@@ -1,4 +1,4 @@
-package com.service.serverPool.DAO;
+package com.service.serverPool.repository.configuration;
 
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.policy.ClientPolicy;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAerospikeRepositories
 @EnableTransactionManagement
 public class Connection {
-    private static String host = "172.28.128.3";
+    private static String host = "172.28.128.5";
 
     private static int port = 3000 ;
 

@@ -1,4 +1,4 @@
-package com.service.serverPool.DAO;
+package com.service.serverPool.repository;
 
 import com.aerospike.client.*;
 import com.aerospike.client.policy.Priority;
@@ -20,14 +20,14 @@ public class ScanRecords implements ScanCallback {
         return records;
     }
 
-    public void scan() throws AerospikeException {
+    public void scan(String setName) throws AerospikeException {
         try {
             ScanPolicy policy = new ScanPolicy();
             policy.concurrentNodes = true;
             policy.priority = Priority.LOW;
-            policy.includeBinData = false;
+            policy.includeBinData = true;
 
-            client.scanAll(policy, DBParameters.spaceName, DBParameters.set, this);
+            client.scanAll(policy, DBParameters.spaceName,setName, this);
             System.out.println("Records " + recordCount);
         }
         finally {
